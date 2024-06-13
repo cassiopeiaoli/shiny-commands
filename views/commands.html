@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiny Commands</title>
+    <style>
+        button {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="commands">
+            <button data-command="sit">Sit</button>
+            <button data-command="send-photo">Send photo</button>
+            <button data-command="send-nude">Send nude photo</button>
+            <button data-command="record-voice-message">Record Voice Message</button>
+            <button data-command="eat">Eat</button>
+            <button data-command="sleep">Sleep</button>
+            <button data-command="nap">Nap</button>
+        </div>
+    </div>
+    <script>
+        if (("Notification" in window)) {
+            Notification.requestPermission().then(perm => {
+                // NOTHIGN!!
+            });
+        }
+
+        async function sendCommand(command) {
+            await fetch('/send-command', {
+                method: 'POST',
+                body: JSON.stringify({ command }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const command = button.dataset.command;
+                await sendCommand(command);
+            });
+        });
+
+
+    </script>
+</body>
+</html>

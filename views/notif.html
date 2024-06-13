@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShinyOS</title>
+</head>
+<body>
+    <h1>AGREE TO NOTIFS</h1>
+    <button onclick="agree">
+        Get Notifications
+    </button>
+    <script>
+        function agree() {
+            if (("Notification" in window)) {
+                Notification.requestPermission().then(perm => {
+                    // NOTHIGN!!
+                });
+            }
+        }
+
+        async function getCommand() {
+            const data = await fetch('/get-command', {
+                method: 'POST',
+            });
+            const response = await data.json();
+            const command = response.command;
+
+            if (command === undefined) {
+                return;
+            }
+
+            const notif = new Notification('New Command!', { body: command });
+        }
+
+        setInterval(getCommand, 2000);
+    </script>
+</body>
+</html>
